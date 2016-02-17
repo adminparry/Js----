@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放大镜</title>
+</head>
+<style>
+*{margin: 0;padding: 0;}
+	#magnifier{width: 700px;height:350px;position:absolute;left: 50%;top:50%;margin-left: -350px;margin-top: -175px;}
+	#small{position: relative;	 width: 350px;height: 350px;background: url(../images/small.jpg) no-repeat ;background-size: 100% 100%;float: left;}
+	#small div{position:absolute;cursor:move;background: black;opacity: 0.4;filter:alpha(opacity:40);display: none;}
+	#box{position:relative; width: 350px;height: 350px;overflow: hidden;display: none; float: left;}
+
+	#box div{position: absolute;left: 0;top: 0;width: 800px;height: 800px;background: url(../images/big.jpg);}
+	
+</style>
+<body>
+	<div id="magnifier">
+		
+		<div id="small">
+			<div id="hand"></div>
+		</div>
+		<div id="box">
+			<div></div>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+</body>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script>
+
+	$(function(){
+		var big = $('#box div');
+		var small = $('#small');
+		var box = $('#box');
+		var hand = $('#hand');
+		var img = $('#box div');
+
+		
+		
+		small.mouseover(function(){
+			
+			
+			hand.show();
+			box.show();
+
+			//设置滑块的大小
+			hand.css({
+				'width':box[0].offsetWidth/big[0].offsetWidth*small[0].offsetWidth+'px',
+				'height':box[0].offsetHeight/big[0].offsetHeight*small[0].offsetHeight+'px'
+			});
+			
+		});
+
+		
+		
+		small.mousemove(function(ev){
+			var oEvent=ev || event;
+			//*event.page对鼠标滚轮更改坐标也支持
+			//滑块的left
+			var l = oEvent.pageX - small.offset().left - hand[0].offsetWidth/2;
+			//滑块的top
+			var t = oEvent.pageY - small.offset().top - hand[0].offsetHeight/2;
+			//滑块的范围控制
+			var x =small[0].offsetWidth - hand[0].offsetWidth;
+			var y = small[0].offsetHeight - hand[0].offsetHeight;
+			//超出范围控制
+			(l<0) && (l=0);
+			(l>x) && (l = x);
+			(t<0) && (t= 0);
+			(t>y) && (t = y);
+			hand.css({
+				'left':l + 'px',
+				'top': t + 'px'
+			});
+			
+			//小盒子和小图片的比例 大盒子和大图片的比例
+			var scaleY = (img[0].offsetHeight-box[0].offsetHeight)/(small[0].offsetHeight- hand[0].offsetHeight);
+			var scaleX = (img[0].offsetWidth-box[0].offsetWidth)/(small[0].offsetWidth - hand[0].offsetWidth);
+			//console.log(l,t,scaleY,scaleX);
+			img.css({
+				'left':-l*scaleX + 'px',
+				'top': -t*scaleY + 'px'
+			});
+			
+			
+		});
+		small.mouseleave(function(){
+			hand.hide();
+			box.hide();
+		});
+	})
+</script>
+</html>

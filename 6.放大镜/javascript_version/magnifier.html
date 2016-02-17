@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="author" content="智能社 - zhinengshe.com" />
+<meta name="copyright" content="智能社 - zhinengshe.com" />
+<meta name="description" content="智能社是一家专注于web前端开发技术的公司，目前主要提供JavaScript培训和HTML5培训两项服务，同时还推出了大量javascript基础知识教程，智能课堂为你带来全新的学习方法和快乐的学习体验。" />
+<title>智能社— http://www.zhinengshe.com</title>
+<style>
+*{ margin:0; padding:0; list-style:none;}
+#box{ position:relative; left:200px; top:100px;}
+#small{ width:300px; height:300px; position:relative;}
+#small img{ width:300px;}
+#small span{ width:100px; height:100px; background:#000; position:absolute; left:0; top:0; opacity:0.4; filter:alpha(opacity:40); cursor:move; display:none;}
+#big{ width:300px; height:300px; position:absolute; left:310px; top:0; overflow:hidden; display:none;}
+#big img{ position:absolute; left:0; top:0;}
+</style>
+<script>
+function getPos(obj){
+	var l=0;
+	var t=0;
+	while(obj){
+		l+=obj.offsetLeft;
+		t+=obj.offsetTop;
+		obj=obj.offsetParent;	
+	}
+	return {left:l ,top: t};
+}
+function isChild(oParent,obj){
+	while(obj){
+		if(obj==oParent)return true;
+		obj=obj.parentNode;
+	}
+	return false;
+}
+window.onload=function(){
+	var oBox=document.getElementById('box');
+	var oSmall=document.getElementById('small');
+	var oFloat=document.getElementById('float');
+	var oBig=document.getElementById('big');
+	var oImg=document.getElementById('img');
+	
+	oSmall.onmouseover=function(){
+		oFloat.style.display='block';
+		oBig.style.display='block';	
+	}
+	
+	oSmall.onmouseout=function(ev){
+		var oEvent=ev || event;
+		var to=oEvent.toElement || oEvent.relatedTarget;
+		
+		if(isChild(oSmall,to))return;
+		
+		oFloat.style.display='none';
+		oBig.style.display='none';	
+	}	
+	
+	
+	oSmall.onmousemove=function(ev){
+		var oEvent=ev || event;
+		var l=oEvent.pageX-getPos(oSmall).left-oFloat.offsetWidth/2;
+		var t=oEvent.pageY-getPos(oSmall).top-oFloat.offsetHeight/2;
+		console.log(l,t);
+		l<0 && (l=0);
+		l>oSmall.offsetWidth-oFloat.offsetWidth && (l=oSmall.offsetWidth-oFloat.offsetWidth);
+		
+		t<0 && (t=0);
+		t>oSmall.offsetHeight-oFloat.offsetHeight && (t=oSmall.offsetHeight-oFloat.offsetHeight);
+		
+		oFloat.style.left=l+'px';
+		oFloat.style.top=t+'px';
+		
+		document.title=l;
+		
+		
+		//小图：  l/(oSmall.offsetWidth-oFloat.offsetWidth);
+		//大图:   ?/(oImg.offsetWidth-oBig.offsetWidth);
+		console.log((oImg.offsetWidth-oBig.offsetWidth)/(oSmall.offsetWidth-oFloat.offsetWidth)+'px')
+		
+		oImg.style.left=-l*(oImg.offsetWidth-oBig.offsetWidth)/(oSmall.offsetWidth-oFloat.offsetWidth)+'px';	
+		oImg.style.top=-t*(oImg.offsetHeight-oBig.offsetHeight)/(oSmall.offsetHeight-oFloat.offsetHeight)+'px';
+	}
+}
+</script>
+</head>
+
+<body>
+<div id="box">
+	<div id="small">
+    	<span id="float"></span>
+        <img src="../images/small.jpg">
+    </div>
+    <div id="big">
+    	<img src="../images/big.jpg" id="img">
+    </div>
+</div>
+</body>
+</html>
