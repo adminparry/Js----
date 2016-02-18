@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>拖拽</title>
+</head>
+<style>	
+	body{height: 2000px;}
+	#drag{width: 200px;height: 200px;background:red;position: absolute;}
+	#drag:hover{cursor: pointer;}
+</style>
+<body>
+	额外认为二位二位认为人
+	<div id="drag"></div>
+</body>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script>
+	$(function(){
+		var drag = $('#drag');
+		drag.mousedown(function(ev){
+			var event = ev || event;
+			//首先记录鼠标相对物体的坐标位置
+			var disX = event.pageX - $(this)[0].offsetLeft;
+			var disY = event.pageY - $(this)[0].offsetTop;
+			//如果可以滚轮 场景不经常使用
+			drag.on('mousewheel',function(){
+				
+				return false;
+			});
+			$(document).on('mousemove',function(ev){
+				var event = ev || event;
+				//鼠标移动时物体的坐标位置
+				var left  = event.pageX - disX;
+				var top = event.pageY - disY;
+
+				//限定范围在可视区内
+			
+				var maxWidth = $(window).width()- drag[0].offsetWidth;
+				var maxHeight = $(window).height() - drag[0].offsetHeight;
+				(left<0) && (left = 0);
+				(left>maxWidth) && (left = maxWidth );
+				(top<0) && (top = 0);
+				(top>maxHeight) && (top = maxHeight);
+				
+				drag.css({
+					'left':left+'px',
+					'top':top+'px'
+				})
+			});
+			$(document).on('mouseup',function(){
+				//清除高内聚操作
+				$(document).off('mousemove');
+				$(document).off('mouseup');
+				//释放鼠标捕获
+				drag[0].releaseCapture && drag[0].releaseCapture;
+
+			});
+			drag[0].setCapture &&　drag[0].setCapture;
+			return false;
+		})
+	});
+</script>
+</html>
