@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>自定义单选框</title>
+	<style>
+		#form{display: none;}
+		span{ width:18px; height:18px; background:url(../images/radio.gif) no-repeat; display:inline-block;}
+		span.on{ background:url(../images/radio.gif) no-repeat 0 -18px;}
+	</style>
+</head>
+<body>
+	<div id="radio">
+		<div>性别：</div>
+		<label for="sex"><span></span>男</label>
+		<label for="sex"><span></span>女</label>
+		<label for="sex"><span></span>中</label>
+		<br><button id="btn">提交</button>
+	</div>
+	<form id="form" action="http://baidu.com">
+		<label for="">
+			
+		<input type="radio" name="sex" value="male" >
+		<input type="radio" name="sex" value="female">
+		<input type="radio" name="sex" value="middle">
+		</label>
+		
+		<input type="submit">
+	</form>
+</body>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script>
+	$(function(){
+		var form = $('#form');
+		var btn = $('#btn');
+		var input = $('#form label input');
+		var label = $('#radio label');
+		var radio = $('#radio label span');
+		label.click(function(){
+			radio.removeClass('on');
+			$(this).children(":first").addClass('on');
+			console.log($(this).index());
+
+			input.eq($(this).index()).attr('checked','checked');
+		});
+		
+		btn.click(function(){
+			form.submit();
+		})
+	})
+</script>
+</html>
