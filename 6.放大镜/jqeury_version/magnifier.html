@@ -7,11 +7,12 @@
 <style>
 *{margin: 0;padding: 0;}
 	#magnifier{width: 700px;height:350px;position:absolute;left: 50%;top:50%;margin-left: -350px;margin-top: -175px;}
-	#small{position: relative;	 width: 350px;height: 350px;background: url(../images/small.jpg) no-repeat ;background-size: 100% 100%;float: left;}
-	#small div{position:absolute;cursor:move;background: black;opacity: 0.4;filter:alpha(opacity:40);display: none;}
-	#box{position:relative; width: 350px;height: 350px;overflow: hidden;display: none; float: left;}
+	#small{position: relative;	 width: 350px;height: 525px;background: url(../images/nv.jpg) no-repeat ;background-size: 100% 100%;float: left;}
+	#hand{position:absolute;cursor:move;background: black;opacity: 0.4;filter:alpha(opacity:40);display: none;
+	}
+	#box{position:relative; width: 350px;height: 525px;overflow: hidden;display: none; float: left;}
 
-	#box div{position: absolute;left: 0;top: 0;width: 800px;height: 800px;background: url(../images/big.jpg);}
+	#box div{position: absolute;left: 0;top: 0;background: url(../images/nv.jpg) no-repeat ;width: 700px;height: 1050px;}
 	
 </style>
 <body>
@@ -45,6 +46,7 @@
 			box.show();
 
 			//设置滑块的大小
+			
 			hand.css({
 				'width':box[0].offsetWidth/big[0].offsetWidth*small[0].offsetWidth+'px',
 				'height':box[0].offsetHeight/big[0].offsetHeight*small[0].offsetHeight+'px'
@@ -75,6 +77,7 @@
 			});
 			
 			//小盒子和小图片的比例 大盒子和大图片的比例
+			
 			var scaleY = (img[0].offsetHeight-box[0].offsetHeight)/(small[0].offsetHeight- hand[0].offsetHeight);
 			var scaleX = (img[0].offsetWidth-box[0].offsetWidth)/(small[0].offsetWidth - hand[0].offsetWidth);
 			//console.log(l,t,scaleY,scaleX);
